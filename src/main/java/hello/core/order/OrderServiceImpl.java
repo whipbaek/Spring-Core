@@ -3,13 +3,16 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository; //추상화로 의존1
     private final DiscountPolicy discountPolicy; // 추상화로 의존2
 
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
@@ -24,5 +27,10 @@ public class OrderServiceImpl implements OrderService{
         //order 측에서는 할인관련 변경이 있어도 전혀 변경되지 않는다. -> 단일 체계 원칙을 잘 지킨경우!
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+
+    //테스트 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 }
